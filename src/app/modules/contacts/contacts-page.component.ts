@@ -1,13 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ContactsService } from '../../services/contacts.service';
+import { ContactWithId } from '../../models/contact.model';
 
 @Component({
-  selector: 'app-tab1',
-  templateUrl: 'contacts-page.component.html',
-  styleUrls: ['contacts-page.component.scss']
+    selector: 'app-tab1',
+    templateUrl: 'contacts-page.component.html',
+    styleUrls: ['contacts-page.component.scss']
 })
-export class ContactsPage {
+export class ContactsPage implements OnInit {
+    contacts: Promise<ContactWithId[]>;
 
-  constructor() {
-  }
+    constructor(private readonly contactsService: ContactsService) {
+    }
 
+    ngOnInit(): void {
+        this.contacts = this.contactsService.getAll();
+    }
 }

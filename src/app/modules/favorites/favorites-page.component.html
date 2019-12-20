@@ -6,4 +6,14 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content></ion-content>
+<ion-content>
+  <h2 style="text-align: center" *ngIf="(contacts | async)?.length===0">No favorites added yet...</h2>
+  <ion-list>
+    <ul>
+      <li *ngFor="let c of (contacts | async)" class="list-item" [class.favorite]="c.isFavorite">
+        {{c.name}} {{c.middleName}} {{c.surname}}
+      </li>
+    </ul>
+  </ion-list>
+
+</ion-content>

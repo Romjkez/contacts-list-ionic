@@ -1,13 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ContactWithId } from '../../models/contact.model';
+import { ContactsService } from '../../services/contacts.service';
 
 @Component({
   selector: 'app-tab2',
   templateUrl: 'favorites-page.component.html',
   styleUrls: ['favorites-page.component.scss']
 })
-export class FavoritesPage {
+export class FavoritesPage implements OnInit {
+  contacts: Promise<ContactWithId[]>;
 
-  constructor() {
+  constructor(private readonly contactsService: ContactsService) {
   }
 
+  ngOnInit(): void {
+    this.contacts = this.contactsService.getFavorites();
+  }
 }

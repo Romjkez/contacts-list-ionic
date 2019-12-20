@@ -1,4 +1,15 @@
-.welcome-card img {
-  max-height: 35vh;
-  overflow: hidden;
+ul {
+  padding: 0 .5rem;
+  list-style: none;
+}
+
+.list-item {
+  padding: .5rem 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: .7rem;
+  box-shadow: 2px -2px 5px 0 rgba(0, 0, 0, .1),
+  -2px -2px 5px 0 rgba(0, 0, 0, .1),
+  2px 2px 5px 0 rgba(0, 0, 0, .1),
+  -2px 2px 5px 0 rgba(0, 0, 0, .1);
+  border-left: .8rem solid transparent;
 }
