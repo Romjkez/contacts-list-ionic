@@ -8,5 +8,5 @@ export interface Contact {
 }
 
 export interface ContactWithId extends Contact {
-    id: number;
+    id: string;
 }

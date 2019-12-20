@@ -16,4 +16,11 @@ export class ContactsPage implements OnInit {
     ngOnInit(): void {
         this.contacts = this.contactsService.getAll();
     }
+
+    doRefresh(event: any): void {
+        setTimeout(() => {
+            this.contacts = this.contactsService.getAll();
+            event.target.complete();
+        }, 500);
+    }
 }

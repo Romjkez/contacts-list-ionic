@@ -1,20 +1,23 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Contacts
-    </ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>
+            Contacts
+        </ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-searchbar [debounce]="300" [placeholder]="'Type contact name...'"></ion-searchbar>
-  <h2 style="text-align: center" *ngIf="(contacts | async)?.length===0">No contacts added yet...</h2>
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <h2 style="text-align: center" *ngIf="(contacts | async)?.length===0">No contacts added yet...</h2>
 
-  <ion-list>
-    <ul>
-      <li *ngFor="let c of (contacts | async)" class="list-item" [class.favorite]="c.isFavorite">
-        {{c.name}} {{c.middleName}} {{c.surname}}
-      </li>
-    </ul>
-  </ion-list>
+    <ion-list>
+        <ul>
+            <li *ngFor="let c of (contacts | async)" class="list-item" [class.favorite]="c.isFavorite"
+                [routerLink]="'/tabs/contact/'+c.id">
+                {{c.name}} {{c.middleName}} {{c.surname}}
+            </li>
+        </ul>
+    </ion-list>
 </ion-content>

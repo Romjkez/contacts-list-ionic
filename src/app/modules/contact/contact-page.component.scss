@@ -1,0 +1,17 @@
+.form-wrapper {
+  padding: 1rem;
+
+  ion-input {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #e4e4e4;
+  }
+
+  .buttons-wrapper {
+    display: flex;
+    justify-content: center;
+
+    ion-button {
+      width: 30%;
+    }
+  }
+}

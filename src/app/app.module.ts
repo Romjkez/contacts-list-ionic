@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { IonicStorageModule } from '@ionic/storage';
 import { ContactsService } from './services/contacts.service';
+import { ByIdResolver } from './resolvers/by-id.resolver';
 
 @NgModule({
     declarations: [AppComponent],
@@ -20,6 +21,7 @@ import { ContactsService } from './services/contacts.service';
     ],
     providers: [
         ContactsService,
+        ByIdResolver,
         StatusBar,
         SplashScreen,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}

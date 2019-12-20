@@ -10,11 +10,15 @@ export class ContactsService {
 
     async add(contact: Contact): Promise<ContactWithId> {
         const id = Date.now().toString();
-        return this.storage.set(id, contact);
+        return this.storage.set(id, {...contact, id});
     }
 
     async delete(id: string): Promise<any> {
         return this.storage.remove(id);
+    }
+
+    async edit(id: string, contact: ContactWithId): Promise<ContactWithId> {
+        return this.storage.set(id, contact);
     }
 
     async get(id: string): Promise<ContactWithId> {
