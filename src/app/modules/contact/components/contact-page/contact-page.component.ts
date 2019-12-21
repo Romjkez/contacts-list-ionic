@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ContactWithId } from '../../models/contact.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { catchError, first, flatMap, map, shareReplay, tap } from 'rxjs/operators';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ContactsService } from '../../services/contacts.service';
-import { ToastController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
+import { ContactsService } from '../../../../services/contacts.service';
+import { ContactWithId } from '../../../../models/contact.model';
+import { EditFormModalComponent } from '../edit-form-modal/edit-form-modal.component';
 
 @Component({
     selector: 'app-contact-page',
@@ -19,7 +20,8 @@ export class ContactPageComponent implements OnInit {
     constructor(private route: ActivatedRoute,
                 private router: Router,
                 private readonly contactsService: ContactsService,
-                private readonly toastController: ToastController) {
+                private readonly toastController: ToastController,
+                private readonly modalController: ModalController) {
     }
 
     ngOnInit() {
@@ -93,6 +95,18 @@ export class ContactPageComponent implements OnInit {
                 this.presentToast(`Error: ${err}`, true);
                 return of(err);
             }),
+        ).subscribe();
+    }
+
+    presentModal() {
+        let modal: any;
+        this.contact.pipe(
+            flatMap(c => from(this.modalController.create({
+                componentProps: c,
+                component: EditFormModalComponent,
+            }))),
+            tap(m => modal = m),
+            flatMap(() => from(modal.present())),
         ).subscribe();
     }
 
