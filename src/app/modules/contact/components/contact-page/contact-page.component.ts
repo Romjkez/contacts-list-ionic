@@ -1,30 +1,35 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { from, Observable, of } from 'rxjs';
-import { catchError, first, flatMap, map, shareReplay, tap } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
+import { Observable, of, Subscription } from 'rxjs';
+import { catchError, filter, first, flatMap, map, shareReplay, tap } from 'rxjs/operators';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ModalController, ToastController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 import { ContactsService } from '../../../../services/contacts.service';
 import { ContactWithId } from '../../../../models/contact.model';
-import { EditFormModalComponent } from '../edit-form-modal/edit-form-modal.component';
 
 @Component({
     selector: 'app-contact-page',
     templateUrl: './contact-page.component.html',
     styleUrls: ['./contact-page.component.scss'],
 })
-export class ContactPageComponent implements OnInit {
+export class ContactPageComponent implements OnInit, OnDestroy {
     contact: Observable<ContactWithId>;
     form: FormGroup;
+    sub: Subscription;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
                 private readonly contactsService: ContactsService,
-                private readonly toastController: ToastController,
-                private readonly modalController: ModalController) {
+                private readonly toastController: ToastController) {
     }
 
     ngOnInit() {
+        this.sub = this.router.events
+            .pipe(
+                filter(e => e instanceof NavigationStart),
+                tap(() => this.form.disable()),
+            ).subscribe();
+
         this.form = new FormGroup({
             name: new FormControl(null, [Validators.required]),
             middleName: new FormControl(null),
@@ -32,6 +37,7 @@ export class ContactPageComponent implements OnInit {
             phone: new FormControl(null, [Validators.required, Validators.maxLength(20), Validators.minLength(3)]),
             email: new FormControl(null),
         });
+        this.form.disable();
 
         this.contact = this.route.data
             .pipe(
@@ -44,19 +50,32 @@ export class ContactPageComponent implements OnInit {
                         phone: new FormControl(contact.phone, [Validators.required, Validators.maxLength(20), Validators.minLength(3)]),
                         email: new FormControl(contact.email),
                     });
+                    this.form.disable();
                 }),
                 shareReplay(1),
             );
     }
 
+    ngOnDestroy(): void {
+        this.sub.unsubscribe();
+    }
+
     onEdit() {
         this.contact.pipe(
-            flatMap(c => this.contactsService.edit(c.id, this.form.value)),
+            first(),
+            filter(() => {
+                if (this.form.valid) {
+                    return true;
+                }
+                throw new Error('Form is not valid');
+            }),
+            flatMap(c => this.contactsService.edit(c.id, {...this.form.value, id: c.id, isFavorite: c.isFavorite})),
             tap(() => this.presentToast(`Contact '${this.form.controls.name.value} was saved!`)),
+            tap(() => this.form.disable()),
             catchError(err => {
-                this.presentToast(`Error: ${err}`, true);
+                this.presentToast(`${err}`, true);
                 return of(err);
-            })
+            }),
         ).subscribe();
     }
 
@@ -95,18 +114,6 @@ export class ContactPageComponent implements OnInit {
                 this.presentToast(`Error: ${err}`, true);
                 return of(err);
             }),
-        ).subscribe();
-    }
-
-    presentModal() {
-        let modal: any;
-        this.contact.pipe(
-            flatMap(c => from(this.modalController.create({
-                componentProps: c,
-                component: EditFormModalComponent,
-            }))),
-            tap(m => modal = m),
-            flatMap(() => from(modal.present())),
         ).subscribe();
     }
 

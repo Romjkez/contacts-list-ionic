@@ -5,12 +5,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ContactPageComponent } from './components/contact-page/contact-page.component';
 import { ByIdResolver } from '../../resolvers/by-id.resolver';
-import { EditFormModalComponent } from './components/edit-form-modal/edit-form-modal.component';
 
 
 @NgModule({
-    declarations: [ContactPageComponent, EditFormModalComponent],
-    entryComponents: [EditFormModalComponent],
+    declarations: [ContactPageComponent],
     imports: [
         IonicModule,
         CommonModule,
