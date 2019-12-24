@@ -26,7 +26,7 @@ University homework
 Developed with Ionic Framework
 
 ## Скриншоты/Screenshots
-<img src="https://i.imgur.com/xo7hxt8.png" alt="contacts" width="410" alight="middle">
+<img src="https://i.imgur.com/xo7hxt8.png" alt="contacts" width="410" align="middle">
 
 ___
 
