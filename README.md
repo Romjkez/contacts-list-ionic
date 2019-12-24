@@ -27,3 +27,4 @@ Developed with Ionic Framework
 
 ## Скриншоты/Screenshots
 ![Contacts](https://i.imgur.com/xo7hxt8.png)
+<img src="https://i.imgur.com/xo7hxt8.png" alt="contacts" width="410">
