@@ -35,7 +35,7 @@ export class AddPage implements OnInit {
                 this.form.reset();
                 return this.router.navigate(['/tabs/contacts']);
             })
-            .then(() => this.presentToast(`Contact '${contact.name} was saved!`))
+            .then(() => this.presentToast(`Contact ${contact.name} was saved!`))
             .catch(err => this.presentToast(`Error: ${err}`, true));
     }
 
