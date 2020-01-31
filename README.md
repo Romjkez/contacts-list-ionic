@@ -1,5 +1,4 @@
 # Книга контактов (Android & IOS & WEB)
-Мобильная интеграция | Лабораторная №4
 
 ## Основной функционал
 
@@ -15,7 +14,7 @@
 ___
 
 # Contacts book (Android & IOS & WEB)
-University homework
+
 ## Main features
 - View contacts
 - Delete contacts
